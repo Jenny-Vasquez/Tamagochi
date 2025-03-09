@@ -53,12 +53,79 @@ El cliente recibe los datos del tablero (incluyendo los arbustos), construyendo 
  - **Representación de los Jugadores**
 El cliente recibe a los **Jugadores** y los dibuja mediante do_newPlayer() en **GameService** actualiza las posiciones de los jugadores y drawPlayers() en **UIv1** coloca a los jugadores en el tablero.
 
+Para implemtar la funcionalidad de que el jugador se esconda el momento que coindia el id contenga bush, este elemento contendra la imagen del arbusto en el mommento que cosultamos la siguiente celda contiene el arbusto, si tiene el arbusto no se dibnuja el jugador, de esta forma es como hacemos la comprobación con el id del bush
+```
+    /**Dibujamos el jugador, si coindice la posicion del arbol no dibuja al jugador */
+    UIv1.drawPlayers = (players, boardSize) => {
+        console.log("================== Players draw ================");
+        console.log(players);
+        const base = document.getElementById(UIv1.uiElements.board);
+        players.forEach(elm => {
+            const index = elm.x * boardSize + elm.y;
+            const tile = base.children[index];
+            var id = (tile.getAttribute("id") !== null) ? tile.getAttribute("id").split("_")[0] : "";
+            if (tile) {
+                if (id !== "tree") {//compruebar si hay un arbol
+                    tile.style.backgroundImage = "url('assets/images/player.png')";
+                    tile.style.backgroundSize = 'cover';
+                }
+                tile.classList.add("player");
+            }
+        });
+    },
+```
+
 ## Funcionalidad de los Botones que implentan el movimiento.
 
 El cliente envía intrucciones al servido para moverse y disparar mediante los botones (Up, Down, Shoot) reflejados **UIv1.js**  de esya forma se emiten eventos socket.emit("movePlayer") y socket.emit("shootPlayer").
+```
+UIv1.drawControls = (player) => {
+
+        const control = document.getElementById(UIv1.uiElements.control);
+        control.className = 'controls';
+
+        control.innerHTML = `
+            <button id="up">Up</button>
+            <button id="left">Left</button>
+            <button id="right">Right</button>
+            <button id="down">Down</button>              
+            <button id="shoot">Shoot</button>
+         `;
+
+        document.getElementById('up').addEventListener('click', () => {
+            console.log("Player " + player + " move on");
+            ConnectionHandler.socket.emit("movePlayer", { direction: "up", playerID: player });
+        });
+        document.getElementById('down').addEventListener('click', () => {
+            console.log("Player " + player + " down");
+            ConnectionHandler.socket.emit("movePlayer", { direction: "down", playerID: player });
+        });
+
+        document.getElementById('right').addEventListener('click', () => {
+            console.log("Player " + player + "  right");
+            ConnectionHandler.socket.emit("movePlayer", { direction: "right", playerID: player });
+        });
+
+        document.getElementById('left').addEventListener('click', () => {
+            console.log("Player " + player + "  left");
+            ConnectionHandler.socket.emit("movePlayer", { direction: "left", playerID: player });
+        });
+
+        document.getElementById('shoot').addEventListener('click', () => {
+            console.log("Player " + player + " shoots");
+            ConnectionHandler.socket.emit("shootPlayer", { playerID: player });
+            
+        
+        });
+
+
+    }
+
+
+```
 
 El servidor procesara el movimiento o disparo desde **GameService.ts**  se calcula la nueva posición o elimina a un jugador si es disparado.
-El servidor envíara esta actualización del estado del juego a todos los clientes mediante **ServerService** y  envía la nueva información de los jugadores a todos en la sala.
+El servidor envíara esta actualización del estado del juego a todos los clientes mediante **ServerService.ts** y  envía la nueva información de los jugadores a todos en la sala.
 
 Los clientes recibira la actualización y redibujara el tablero con do_newPlayer() y drawPlayers() en **UIv1.js** actualizan la vista en pantalla.
 
@@ -183,6 +250,21 @@ El resultado sera que los jugadores podran moverse y atacar en tiempo real sin r
 - Si una sala está vacía, se crea una nueva.
 - Cuando una sala tiene dos jugadores, la partida inicia. Podemos cambiar el número de jugadores por sala (actualmente 2, pero podría llegar hasta 4).
 
+```
+import { Game } from "../../game/entities/Game";
+import { Player } from "../../player/entities/Player";
+
+export const RoomConfig = {
+    maxRoomPlayers : 2
+};
+
+export interface Room {
+    name : String;
+    players : Player[];
+    occupied: Boolean;
+    game: Game |null;
+}
+```
 ### Control centralizado del estado del juego en el servidor
 **Dónde lo implementamos:**  
 - `GameService.ts` es el encargado de gestionar el estado global del juego en el servidor.
