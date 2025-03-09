@@ -41,7 +41,7 @@ Accede a [http://127.0.0.1:3000](http://127.0.0.1:3000) en tu navegador para int
   ## Flujo Inicial: Desde que el Cliente accdede hasta que se dibuja el tablero
   - Cuando el Cliente accede a la pagina del juego (index.html) se inicia el proceso de conexión y configuración del juego.
   - El cliente se conecta al Servidor, se crea una instancia en **Game controller** para inicializar el juego.
-  - **GameController establece una conexión con el servidor usando **ConnectionHandler** que se encarga de  establecer la conexión con WebSockets, cuando la coneccion es correcta el servido envia un mensaje de confirmación con el ID del jugador.
+  - **GameController** establece una conexión con el servidor usando **ConnectionHandler** que se encarga de  establecer la conexión con WebSockets, cuando la coneccion es correcta el servido envia un mensaje de confirmación con el ID del jugador.
   Desde el servidor
   - **ServerService** asigna al jugador a una sala usando **RoomSertvice**, de esta forma **GameService** genera el tablero donde tendra en cuenta las posiciones del jugador y lo enviara al cliente.
 - El servidor generara el tablero y los arbustos con **BoardBuilder** este enviara la información del tablero al cliente a través de WebSockets.
