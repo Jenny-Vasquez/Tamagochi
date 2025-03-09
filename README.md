@@ -37,8 +37,8 @@ Accede a [http://127.0.0.1:3000](http://127.0.0.1:3000) en tu navegador para int
 - **El tablero no se dibujará hasta que los jugadores estén en el juego.** Actualmente, está configurado para **dos jugadores**, aunque podría ampliarse para más.  
 - El jugador se esconde al entrar en un arbusto, lo que permite moverse sin ser visto y sorprender al resto de jugadores.
 
-## Funcionalidades Técnicas
-  # Flujo Inicial: Desde que el Cliente accdede hasta que se dibuja el tablero
+# Funcionalidades Técnicas
+  ## Flujo Inicial: Desde que el Cliente accdede hasta que se dibuja el tablero
   - Cuando el Cliente accede a la pagina del juego (index.html) se inicia el proceso de conexión y configuración del juego.
   - El cliente se conecta al Servidor, se crea una instancia en **Game controller** para inicializar el juego.
   - **GameController establece una conexión con el servidor usando **ConnectionHandler** que se encarga de  establecer la conexión con WebSockets, cuando la coneccion es correcta el servido envia un mensaje de confirmación con el ID del jugador.
@@ -53,7 +53,7 @@ El cliente recibe los datos del tablero (incluyendo los arbustos), construyendo 
   Representación de los Jugadores
 El cliente recibe a los **Jugadores** y los dibuja mediante do_newPlayer() en **GameService** actualiza las posiciones de los jugadores y drawPlayers() en **UIv1** coloca a los jugadores en el tablero.
 
-# Funcionalidad de los Botones que implentan el movimiento.
+## Funcionalidad de los Botones que implentan el movimiento.
 
 El cliente envía intrucciones al servido para moverse y disparar mediante los botones (Up, Down, Shoot) reflejados **UIv1.js**  de esya forma se emiten eventos socket.emit("movePlayer") y socket.emit("shootPlayer").
 
