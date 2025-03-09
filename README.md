@@ -46,11 +46,11 @@ Accede a [http://127.0.0.1:3000](http://127.0.0.1:3000) en tu navegador para int
   - **ServerService** asigna al jugador a una sala usando **RoomSertvice**, de esta forma **GameService** genera el tablero donde tendra en cuenta las posiciones del jugador y lo enviara al cliente.
 - El servidor generara el tablero y los arbustos con **BoardBuilder** este enviara la información del tablero al cliente a través de WebSockets.
 
-  Representación del Tablero
+ - **Representación del Tablero**
 El cliente recibe el **tablero** y lo dibuja mediante do_newBoard() en **GameService** y drawBoard() en **UIv1** dibuja el tablero en pantalla.
-  Representación de los arbustos
+ - **Representación de los arbustos**
 El cliente recibe los datos del tablero (incluyendo los arbustos), construyendo el mapa internamente con **Board.js** y dibujando el  tablero en la pantalla con **UIv1**.
-  Representación de los Jugadores
+ - **Representación de los Jugadores**
 El cliente recibe a los **Jugadores** y los dibuja mediante do_newPlayer() en **GameService** actualiza las posiciones de los jugadores y drawPlayers() en **UIv1** coloca a los jugadores en el tablero.
 
 ## Funcionalidad de los Botones que implentan el movimiento.
